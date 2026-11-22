@@ -1,0 +1,61 @@
+#include <stdio.h>
+
+int main()
+{
+    int year, days, startDay;
+    int month, date, i;
+
+    char *months[] = {
+        "January", "February", "March", "April",
+        "May", "June", "July", "August",
+        "September", "October", "November", "December"
+    };
+
+    printf("Enter year: ");
+    scanf("%d", &year);
+
+    // Find leap year
+    if((year % 400 == 0) || (year % 4 == 0 && year % 100 != 0))
+        days = 29;
+    else
+        days = 28;
+
+    // Calculate starting day of the year
+    startDay = (year * 365 + (year - 1) / 4
+                - (year - 1) / 100 + (year - 1) / 400) % 7;
+
+    for(month = 0; month < 12; month++)
+    {
+        printf("\n\n       %s %d\n", months[month], year);
+        printf(" Sun Mon Tue Wed Thu Fri Sat\n");
+
+        int monthDays;
+
+        if(month == 1)
+            monthDays = days;
+        else if(month == 3 || month == 5 || month == 8 || month == 10)
+            monthDays = 30;
+        else
+            monthDays = 31;
+
+        // Print spaces before first date
+        for(i = 0; i < startDay; i++)
+            printf("    ");
+
+        // Print dates
+        for(date = 1; date <= monthDays; date++)
+        {
+            printf("%4d", date);
+
+            if((date + startDay) % 7 == 0)
+                printf("\n");
+        }
+
+        printf("\n");
+
+        // Calculate starting day of next month
+        startDay = (startDay + monthDays) % 7;
+    }
+
+    return 0;
+}
